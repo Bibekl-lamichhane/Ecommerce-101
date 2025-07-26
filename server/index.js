@@ -3,7 +3,8 @@ const dbConnect = require("./db/connection");
 require("dotenv").config();
 
 const app = express();
-
+const cors = require('cors');
+app.use(cors()); // Allows all origins by default
 //to parse everything in Json format foe expressjs
 app.use(express.json());
 const port = process.env.PORT || 5000;
@@ -13,7 +14,6 @@ dbConnect();
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-
 
 //To create scheme
 const { Schema } = mongoose;
@@ -32,21 +32,24 @@ const userSchema = new Schema({
 
 //to create modal from schema
 const User = mongoose.model("User", userSchema);
+const jwt = require('jsonwebtoken');
 
 app.post("/register", async (req, res) => {
+  console.log(req.body)
+
   const phoneNumberExist= await User.exists({phoneNumber: req.body.phoneNumber})
   const emailExist= await User.exists({email: req.body.email})
   const hashedPassword= await bcrypt.hash(req.body.password,saltRounds)
   req.body.password=hashedPassword
   if(phoneNumberExist){
-   return res.json({ msg:'Phone number already taken'})
+   return res.status(409).json({ msg:'Phone number already taken'})
   }
   if(emailExist){
-   return res.json({ msg:'email already taken'})
+   return res.status(409).json({ msg:'Email already taken'})
   }
   else{
   User.create(req.body)
-  res.json({msg:"Regsitered sucessfully"})}
+  return res.json({msg:"Regsitered sucessfully"})}
 
 });
 
@@ -55,20 +58,20 @@ app.post("/login", async (req, res) => {
   if(emailExist){
     const user= await User.findOne({ email: req.body.email })
     const match = await bcrypt.compare(req.body.password, user.password)
-    if(match){
-       return res.json({ msg:'Login in sucessfull'})
+    if(match){   
+       const token = jwt.sign({ email:req.body.email},process.env.SECRECT_KEY);
+       return res.json({ msg:'Login sucessfull',token,user})
  }
-return  res.json({ msg:'Incorrect Password'})
+return  res.status(401).json({ msg:'Incorrect Password'})
   }
 
-  return res.json({ msg:'Email not registered'})
+  return res.status(401).json({ msg:'Email not registered'})
 });
 
 
 app.get("/users", async (req, res) => {
   const data= await User.find()
-  res.json(data);
-  
+  res.json(data); 
 });
 
 

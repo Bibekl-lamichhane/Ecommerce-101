@@ -3,34 +3,59 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Link from "next/link";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
   phoneNumber: Yup.string()
     .min(9, "Invalid Phone Number")
-    .max(10, "Invalid Phone Number")
+    .max(18, "Invalid Phone Number")
     .required("Required"),
   fullName: Yup.string()
     .min(3, "Too Short!")
-    .max(12, "Too Long!")
+    .max(30, "Too Long!")
     .required("Required"),
   password: Yup.string()
     .min(4, "Too Short!")
     .max(25, "Too Long!")
     .required("Required"),
-  role: Yup.string().required("A radio option is required")
+  role: Yup.string().required("A radio option is required"),
 });
+
 const Page = () => {
+  const router=useRouter()
+  const[isLoading,setIsLoading]=React.useState(false)
   const [value, setValue] = React.useState("female");
   const handleChange = (event) => {
     setValue(event.target.value);
   };
+  const registerUser = async (values) => {
+    const otherparameters= {
+      method: "POST",
+      body: JSON.stringify(values),
+      headers: { "Content-Type": "application/json" },
+    }
+    const response=await fetch("http://localhost:8000/register", otherparameters);
+    const data = await response.json();
+    if(response.status==200) {
+      toast.success(data.msg);
+      setIsLoading(!isLoading)
+      router.push('/login')
+      
+    }
+    else{ 
+       toast.error(data.msg);
+    }
+  };
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screenspace-y-4 my-[15%] md:my-[4%] border-blue-400 rounded-3xl">
@@ -50,10 +75,10 @@ const Page = () => {
         validationSchema={SignupSchema}
         onSubmit={(values) => {
           // same shape as initial values
-          console.log(values);
+          registerUser(values);
         }}
       >
-        {({ errors, touched,setFieldValue,values }) => (
+        {({ errors, touched, setFieldValue, values }) => (
           <Form method="POST">
             <Box
               sx={{ "& .MuiTextField-root": { m: 1, width: "35ch" } }}
@@ -107,9 +132,9 @@ const Page = () => {
                     name="role"
                     value={values.role}
                     onChange={(e) => {
-            setFieldValue("role", e.target.value); // update Formik value
-            setValue(e.target.value);              // update local state
-          }}
+                      setFieldValue("role", e.target.value); // update Formik value
+                      setValue(e.target.value); // update local state
+                    }}
                   >
                     <FormControlLabel
                       value="user"
@@ -122,9 +147,9 @@ const Page = () => {
                       label="Admin"
                     />
                   </RadioGroup>
-                    {errors.role && touched.role && (
-          <div className="text-red-500 text-sm">{errors.role}</div>
-        )}
+                  {errors.role && touched.role && (
+                    <div className="text-red-500 text-sm">{errors.role}</div>
+                  )}
                 </FormControl>
               </div>
               <div className="text-sm flex ">
@@ -140,6 +165,8 @@ const Page = () => {
           </Form>
         )}
       </Formik>
+      <div className={`${isLoading==false ? 'hidden' : 'block'}`}><CircularProgress/></div>
+      
     </div>
   );
 };

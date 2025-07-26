@@ -3,14 +3,17 @@ import React  from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Link from 'next/link';
-import { Button } from '@mui/material'
+import { Button, CircularProgress } from '@mui/material'
  import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { setisLoggedIn } from '@/redux/reducerSlices/userSlice';
+import { Email } from '@mui/icons-material';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
-const SignupSchema = Yup.object().shape({
-   username: Yup.string()
+const LoginSchema = Yup.object().shape({
+   email: Yup.string()
      .min(2, 'Too Short!')
      .max(50, 'Too Long!')
      .required('Required'),
@@ -21,7 +24,30 @@ const SignupSchema = Yup.object().shape({
  });
  
 const Page = () => {
+  const[isLoading,setIsLoading]=React.useState(false)
   const dispatch=useDispatch()
+  const router=useRouter()
+ const loginUser = async (values) => {
+    const otherparameters= {
+      method: "POST",
+      body: JSON.stringify(values),
+      headers: { "Content-Type": "application/json" },
+    }
+    const response=await fetch("http://localhost:8000/login", otherparameters);
+    const data = await response.json();
+    if(response.status==200) {
+      
+      dispatch(setisLoggedIn())
+      toast.success(data.msg)
+      router.push('/')
+      
+      
+    }
+    else{ 
+       toast.error(data.msg);
+    }
+  };
+  
   return (
     
     <div className='flex flex-col items-center justify-center min-h-screenspace-y-4 my-[15%] md:my-[4%] border-blue-400 rounded-3xl'>
@@ -32,13 +58,13 @@ const Page = () => {
       </div>
        <Formik
        initialValues={{
-         username: '',
+         email: '',
          password: '',
        }}
-       validationSchema={SignupSchema}
+       validationSchema={LoginSchema}
        onSubmit={values => {
          // same shape as initial values
-         console.log(values);
+         loginUser(values)
        }}
      >
        {({ errors, touched }) => (
@@ -52,12 +78,12 @@ const Page = () => {
         <Field 
           as={TextField}
           id="filled-required"
-          label="Username"
+          label="Email"
           variant="filled"
-          name="username"
+          name="email"
          
         />
-        <div className='text-sm text-red-400'>{errors.username}</div>
+        <div className='text-sm text-red-400'>{errors.email}</div>
         <Field
           as={TextField}
           id="filled-password-input"
@@ -70,13 +96,15 @@ const Page = () => {
         />
       <div className='text-sm text-red-400'>{errors.password}</div>
         <div className='text-sm flex '><p>Don't have and account yet?</p><Link href="/register"><p className='mx-2'>Sign up?</p></Link></div>
-        <Button variant="contained" type='submit' onClick={()=>dispatch(setisLoggedIn())} >
+        <Button variant="contained" type='submit'  >
   Login
 </Button>
       </Box>
     </Form>
        )}
     </Formik>
+         <div className={`${isLoading==false ? 'hidden' : 'block'}`}><CircularProgress/></div>
+         
     </div>
   );
 }

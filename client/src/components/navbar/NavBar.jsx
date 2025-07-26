@@ -31,6 +31,7 @@ export default function NavBar({ClickHandeled}) {
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -205,9 +206,9 @@ const CartBadge = styled(Badge)`
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
-          <Link href="/login" onClick={() => dispatch(setisLoggedOut())}>
+          <p onClick={() => dispatch(setisLoggedOut())}>
             Logout
-          </Link>
+          </p>
         </MenuItem>
       </Menu>
        </div>
