@@ -45,9 +45,9 @@ const CartBadge = styled(Badge)`
 
   return (
     <React.Fragment>
-      <div className="flex justify-between items-center mt-2 mr-4">
-         <Image src="/KIN MEL.png" width={40} height={40} alt="logo" className="hidden md:block ml-12" />
-        <div className=" md:hidden mx-6">
+      <div className="flex justify-between items-center mt-2 px-2 md:px-4">
+         <Image src="/KIN MEL.png" width={40} height={40} alt="logo" className="hidden md:block  ml-6 lg:ml-12" />
+        <div className="md:hidden mx-6">
          <IconButton
             size="large"
             edge="start"
@@ -63,7 +63,7 @@ const CartBadge = styled(Badge)`
           sx={{
             display: {
               xs: "none", // hidden on extra small
-              sm: "none", // hidden on small
+              sm: "flex", // hidden on small
               md: "flex", // visible on medium and up
             },
             alignItems: "center",

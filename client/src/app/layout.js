@@ -19,7 +19,7 @@ export default function RootLayout(props) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}  
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}  
       > <Provider>
         {children}</Provider>
       </body>

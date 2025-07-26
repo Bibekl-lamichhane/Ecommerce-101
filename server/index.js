@@ -49,6 +49,22 @@ app.post("/register", async (req, res) => {
   res.json({msg:"Regsitered sucessfully"})}
 
 });
+
+app.post("/login", async (req, res) => {
+   const emailExist= await User.exists({email: req.body.email})
+  if(emailExist){
+    const user= await User.findOne({ email: req.body.email })
+    const match = await bcrypt.compare(req.body.password, user.password)
+    if(match){
+       return res.json({ msg:'Login in sucessfull'})
+ }
+return  res.json({ msg:'Incorrect Password'})
+  }
+
+  return res.json({ msg:'Email not registered'})
+});
+
+
 app.get("/users", async (req, res) => {
   const data= await User.find()
   res.json(data);
