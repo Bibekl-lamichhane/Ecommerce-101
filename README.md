@@ -113,10 +113,7 @@ _Below is an example of how you can instruct your audience on installing and set
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = "ENTER YOUR API";
-   ```
+4.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -163,7 +160,7 @@ Shopping Cart
 
 - [ ] Add to Cart: Users can add products to their shopping cart.
 - [ ] Cart Management: Users can view items in their cart, update quantities, or remove items.
-- [] Persistent Cart: Items remain in the cart even if the user logs out.
+- [ ] Persistent Cart: Items remain in the cart even if the user logs out.
 
 Checkout Process
 
@@ -179,7 +176,7 @@ Order Management
 
 Wis list
 
-- [x ] Ad to Wishlist: Users can add products to a wishlist for future reference.
+- [x] Ad to Wishlist: Users can add products to a wishlist for future reference.
 
 Customer Support
 
@@ -293,7 +290,6 @@ Use this space to list resources you find helpful and would like to give credit 
 - [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 - [Tailwind Cheatsheet](https://tailwindcomponents.com/cheatsheet/)
 - [Img Shields](https://shields.io)
-- [Font Awesome](https://fontawesome.com)
 - [React Icons](https://react-icons.github.io/react-icons/search)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -308,8 +304,6 @@ Use this space to list resources you find helpful and would like to give credit 
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
 [tailwindcss]: https://img.shields.io/badge/tailwindcss-38B2AC?style=flat&logo=tailwindcss&logoColor=white
 [tailwindcss-url]: https://tailwindcss.com
 [mongodb-url]: https://www.mongodb.com/
