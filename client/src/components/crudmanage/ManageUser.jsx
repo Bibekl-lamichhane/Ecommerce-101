@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
@@ -23,11 +22,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
-function createData(productid,name, edit, price, category, label,image, creationat,description) {
+function createData(_id, fullName, email, phoneNumber, password, role) {
   return {
-    productid,name, edit, price, category, label,image, creationat,description
+    _id,
+    fullName,
+    email,
+    phoneNumber,
+    password,
+    role,
   };
 }
+
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -45,62 +51,43 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-
 const headCells = [
   {
-    id: 'productid',
-    numeric: true,
-    disablePadding: true,
-    label: 'Product ID',
-  },
-  {
-    id: 'name',
-    numeric: false,
-    disablePadding: true,
-    label: 'Name of Product',
-  },
-  {
-    id: 'edit',
-    numeric: false,
-    disablePadding: false,
-    label: 'Edit',
-  },
-  {
-    id: 'price',
+    id: 'id',
     numeric: true,
     disablePadding: false,
-    label: 'Price (Nrs)',
+    label: 'ID',
   },
   {
-    id: 'category',
-    numeric: false,
+    id: 'fullName',
+    numeric: true,
     disablePadding: false,
-    label: 'Category',
+    label: 'Full Name',
   },
   {
-    id: 'label',
-    numeric: false,
+    id: 'email',
+    numeric: true,
     disablePadding: false,
-    label: 'Label',
+    label: 'Email',
   },
   {
-    id: 'image',
-    numeric: false,
+    id: 'phoneNumber',
+    numeric: true,
     disablePadding: false,
-    label: 'Image',
-  },
-   {id: 'creationdate',
-    numeric: false,
-    disablePadding: false,
-    label: 'Creation At',
+    label: 'PhoneNumber',
   },
   {
-    id: 'description',
-    numeric: false,
+    id: 'password',
+    numeric: true,
     disablePadding: false,
-    label: 'Description',
-  }
-   
+    label: 'Password',
+  },
+  {
+    id: 'role',
+    numeric: true,
+    disablePadding: false,
+    label: 'Role',
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -130,7 +117,6 @@ function EnhancedTableHead(props) {
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
-            
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -191,13 +177,13 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Manage Product
+          Nutrition
         </Typography>
       )}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
-            <DeleteIcon/>
+            <DeleteIcon />
           </IconButton>
         </Tooltip>
       ) : (
@@ -215,16 +201,16 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function CrudManage({data}) {
+export default function ManageUser({data}) {
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('productid');
+  const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const rows =data.map((item)=>{
-    return createData(item.id,item.title,"Edit",item.price ,item.category.name,item.category.slung,item.images,item.creationAt,item.description)
+  const rows=data.map((item)=>{
+    return  createData(item._id,item.fullName,item.email,item.phoneNumber,item.password,item.role)
   })
  
 
@@ -236,7 +222,7 @@ export default function CrudManage({data}) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.productid);
+      const newSelected = rows.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
@@ -307,17 +293,17 @@ export default function CrudManage({data}) {
             />
             <TableBody>
               {visibleRows.map((row, index) => {
-                const isItemSelected = selected.includes(row.productid);
+                const isItemSelected = selected.includes(row._id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.productid)}
+                    onClick={(event) => handleClick(event, row._id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.productid}
+                    key={row._id}
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
@@ -336,16 +322,13 @@ export default function CrudManage({data}) {
                       scope="row"
                       padding="none"
                     >
-                      {row.productid}
+                      {row._id}
                     </TableCell>
-                    <TableCell align="right">{row.name}</TableCell>
-                    <TableCell align="right">{row.edit}</TableCell>
-                    <TableCell align="right">{row.price}</TableCell>
-                    <TableCell align="right">{row.category}</TableCell>
-                    <TableCell align="right">{row.label}</TableCell>
-                    <TableCell align="right">{row.image}</TableCell>
-                    <TableCell align="right">{row.creationat}</TableCell>
-                    <TableCell  align="right"><div className='truncate w-60'>{row.description}</div></TableCell>
+                    <TableCell align="right">{row.fullName}</TableCell>
+                    <TableCell align="right">{row.email}</TableCell>
+                    <TableCell align="right">{row.phoneNumber}</TableCell>
+                    <TableCell align="right">{row.password}</TableCell>
+                    <TableCell align="right">{row.role}</TableCell>
                   </TableRow>
                 );
               })}

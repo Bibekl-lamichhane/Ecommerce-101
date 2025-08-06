@@ -1,10 +1,11 @@
-'userclient'
+'use client'
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState={
-    userName:'',
+    userDetails:{},
     isLoggedIn:false,
     token:''
+    
 }
 
 const userSlice= createSlice({
@@ -15,13 +16,19 @@ const userSlice= createSlice({
         state.isLoggedIn=true
        },
        setisLoggedOut(state){
+        localStorage.removeItem('userDetails');
         state.isLoggedIn=false
+        state.userDetails={}
+        state.token=''
         
+       },setUserDetails(state,actions){
+        state.token=actions.payload.token
+        state.userDetails=actions.payload.user
        }
       
        
     }
 
 })
-export const { setisLoggedIn,setisLoggedOut } = userSlice.actions
+export const { setisLoggedIn,setisLoggedOut,setUserDetails } = userSlice.actions
 export default userSlice.reducer

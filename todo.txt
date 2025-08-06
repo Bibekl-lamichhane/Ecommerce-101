@@ -1,0 +1,3 @@
+1) add-category not working
+2) dynamically view  details page adding
+3) fixing the wishlist key click in product card to view details page

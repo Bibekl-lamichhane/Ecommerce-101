@@ -41,10 +41,10 @@ export default function UserDrawer({ClickHandeled,onClose,openProp}) {
               <Divider />
         {!isLoggedIn && (
           <div className="md:hidden flex gap-6 m-4  ">
-            <Button component ={Link} href="/register" variant="outlined" >
+            <Button component ={Link} href="/register" variant="outlined" onClick={onClose} >
               Signup
             </Button>
-            <Button component ={Link} href="/login">
+            <Button component ={Link} href="/login" onClick={onClose}>
               Login
             </Button>
           </div>

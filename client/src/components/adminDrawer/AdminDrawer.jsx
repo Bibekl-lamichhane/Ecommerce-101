@@ -19,7 +19,7 @@ export default function AdminDrawer({ClickHandeled,adminFeatures,onClose,openPro
         {adminFeatures.map((text, index) => (
         
           <ListItem key={index} disablePadding>
-            <ListItemButton href={text.linkto}>
+            <ListItemButton href={text.linkto} onClick={onClose} >
               <ListItemIcon>
                 {index % 2 === 0 ? <ManageAccountsIcon/>: <AddIcon />}
               </ListItemIcon>

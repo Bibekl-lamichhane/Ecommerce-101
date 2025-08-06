@@ -6,12 +6,11 @@ import Link from 'next/link';
 import { Button, CircularProgress } from '@mui/material'
  import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
-import { useDispatch } from 'react-redux';
-import { setisLoggedIn } from '@/redux/reducerSlices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setisLoggedIn, setUserDetails } from '@/redux/reducerSlices/userSlice';
 import { Email } from '@mui/icons-material';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-
 const LoginSchema = Yup.object().shape({
    email: Yup.string()
      .min(2, 'Too Short!')
@@ -24,9 +23,9 @@ const LoginSchema = Yup.object().shape({
  });
  
 const Page = () => {
-  const[isLoading,setIsLoading]=React.useState(false)
   const dispatch=useDispatch()
   const router=useRouter()
+  
  const loginUser = async (values) => {
     const otherparameters= {
       method: "POST",
@@ -36,12 +35,18 @@ const Page = () => {
     const response=await fetch("http://localhost:8000/login", otherparameters);
     const data = await response.json();
     if(response.status==200) {
-      
+      dispatch(
+        setUserDetails(data)
+      )
       dispatch(setisLoggedIn())
       toast.success(data.msg)
-      router.push('/')
-      
-      
+      setTimeout(() => {
+       if(data.user.role=='admin'){
+        router.push('/admin')
+      }
+      else{router.push('/')}  // Log the data received from response
+  }, 0);
+   
     }
     else{ 
        toast.error(data.msg);
@@ -103,8 +108,6 @@ const Page = () => {
     </Form>
        )}
     </Formik>
-         <div className={`${isLoading==false ? 'hidden' : 'block'}`}><CircularProgress/></div>
-         
     </div>
   );
 }

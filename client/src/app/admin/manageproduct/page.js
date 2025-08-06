@@ -1,21 +1,25 @@
 'use client'
-import AdminNavBar from '@/components/adminNavbar/AdminNavBar';
-import CrudManage from '@/components/crudmanage/CrudManage'
+import ManageProduct from '@/components/crudmanage/ManageProduct';
+import Loading from '@/components/Loading';
 import React, { useEffect, useState } from 'react'
 
 const page = () => {
   const [products, setProducts] = useState([]);
+  const [loading,isLoading]=useState(true)
   useEffect(()=>{
   async function fetchData() {
-  const res= await fetch("https://api.escuelajs.co/api/v1/products")
+  const res= await fetch("http://localhost:8000/products")
   const data =await res.json()
-  setProducts(data)
+  isLoading(false)
+  setProducts(data.products)
   }
   fetchData()
 },[])
+if(loading)return<Loading/>
   return (
+    
     <div>
-        <CrudManage nameofCrud="Product" data={products}/>
+        <ManageProduct nameofCrud="Products" data={products || []}/>
     </div>
   )
 }

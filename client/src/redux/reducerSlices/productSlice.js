@@ -7,7 +7,8 @@ const { createSlice } = require("@reduxjs/toolkit")
 const initialState={
     cartItems:[],
     wishListItems:[],
-    setWishListColor:'grey'
+    setWishListColor:'grey',
+   
 }
 
 const productSlice=createSlice({
@@ -18,16 +19,19 @@ const productSlice=createSlice({
             state.cartItems.push(actions.payload)
             toast.success('Added to the Cart')
         },
+        setCategory(state,actions){
+            state.Category=actions.payload
+        },
          addProductInWishList(state,actions){
             const product=actions.payload
-            const exist=state.wishListItems.find(item=>item.id==product.id)
+            const exist=state.wishListItems.find(item=>item._id==product._id)
            
             if(!exist){
                  state.wishListItems.push(actions.payload)
                  toast.success('Added to Wishlist')
             }
             else{
-                state.wishListItems= state.wishListItems.filter(item=>item.id!=product.id)
+                state.wishListItems= state.wishListItems.filter(item=>item._id!=product._id)
                 toast.success('Removed from Wishlist')
                 }
             }
@@ -35,5 +39,5 @@ const productSlice=createSlice({
         }
     }
 )
-export const { addProductInCart,addProductInWishList } = productSlice.actions
+export const { addProductInCart,addProductInWishList,setCategory } = productSlice.actions
 export default productSlice.reducer

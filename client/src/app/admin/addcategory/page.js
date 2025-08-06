@@ -4,38 +4,39 @@ import { Button, Input } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 
 const page = () => {
-  const[products,setProducts]=useState([])
+  
   const[category,setCategory]=useState([])
   const[value,setValue]=useState('')
 
   useEffect(()=>{
     
-    async function getdata(){
-    const res = await fetch("https://api.escuelajs.co/api/v1/products")
+    async function getdata(){ 
+    const res = await fetch("http://localhost:8000/products")
     const data=await res.json()
-    setProducts(data)
+    setCategory(data.mainCategory)
+    console.log(data)
   
-  let uniquecategories=[]
+  let uniqueMaincategories=[]
   let previousItem=[]
  
   data.map((item,key)=>{
-     if( previousItem!=item.category.name){
-    previousItem=item.category.name
-    uniquecategories.push(item.category.name)}
+     if( previousItem!=item.main_category){
+    previousItem=item.main_category
+    uniqueMaincategories.push(item.main_category)}
   })
-  setCategory(uniquecategories)}
+  setMainCategory(uniqueMaincategories)}
   getdata()
   },[])
   const addCategory=(event)=>{
     setValue(event.target.value);
   }
   const handelCLick=()=>{
-    if(value &&!category.includes(value)){
-    setCategory(prev=>[...prev,value])
+    if(value &&!maincategory.includes(value)){
+    setMainCategory(prev=>[...prev,value])
     setValue('')}
   }
   const generateNewCategory=()=>{
-    return category.map((item,key)=>{
+    return maincategory.map((item,key)=>{
       return <li key={key}>{item}</li>
     })
   }

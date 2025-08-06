@@ -32,7 +32,6 @@ const SignupSchema = Yup.object().shape({
 
 const Page = () => {
   const router=useRouter()
-  const[isLoading,setIsLoading]=React.useState(false)
   const [value, setValue] = React.useState("female");
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -47,7 +46,6 @@ const Page = () => {
     const data = await response.json();
     if(response.status==200) {
       toast.success(data.msg);
-      setIsLoading(!isLoading)
       router.push('/login')
       
     }
@@ -165,7 +163,6 @@ const Page = () => {
           </Form>
         )}
       </Formik>
-      <div className={`${isLoading==false ? 'hidden' : 'block'}`}><CircularProgress/></div>
       
     </div>
   );

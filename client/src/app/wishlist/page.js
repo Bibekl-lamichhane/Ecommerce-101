@@ -9,8 +9,8 @@ const{wishListItems}=useSelector(state=>state.product)
      <main className="container mx-auto p-8">
           <h1 className="text-3xl font-bold mb-8">Wish Listed Products</h1>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {wishListItems.map((product) => (
-              <ProductCard  key={product.id} product={product} />
+            {wishListItems.map((product,key) => (
+              <ProductCard key={key} product={product} />
             ))}
           </div>
         </main>
