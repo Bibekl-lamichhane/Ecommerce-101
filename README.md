@@ -6,7 +6,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Bibekl-lamichhane/Ecommerce-101>
-    <img src="client/public/KIN MEL.png" alt="Logo" width="80" height="80">
+    <img src="/client/public/KIN MEL.png" alt="Logo" width="80" height="80"/>
   </a>
 
   <h3 align="center">KIN MEL</h3>
@@ -58,7 +58,7 @@ Here are the few screenshots of my project:
 
 1. Home Page
 <div align="center">
-    <img src="/client/public/home.png" alt="homepage" width="800" height="480">
+    <img src="client/public/Screenshot 2025-08-06 231532.png" alt="homepage" width="800" height="480">
 </div>
 <br/>
 
@@ -70,7 +70,6 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 - [![Next][Next.js]][Next-url]
 - [![React][React.js]][React-url]
-- [![Bootstrap][Bootstrap.com]][Bootstrap-url]
 - [![tailwindcss][tailwindcss]][tailwindcss-url]
 
 #### Back End
